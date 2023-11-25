@@ -10,4 +10,11 @@ Currently, two official plugins are available:
 # Features
 
 - single page application using [react-router-dom](https://reactrouter.com/en/main)
-- [make web and dashboard 
+- make web and dashboard
+
+# How to install
+- clone the repo in your desktop
+  run this command
+- npm install
+- npm i react-router-dom
+- npm i bootstrap
