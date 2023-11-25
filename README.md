@@ -9,5 +9,5 @@ Currently, two official plugins are available:
 
 #features
 
--single page application using [react-router-dom](https://reactrouter.com/en/main)
--make web and dashboard 
+- single page application using [react-router-dom](https://reactrouter.com/en/main)
+- make web and dashboard 
