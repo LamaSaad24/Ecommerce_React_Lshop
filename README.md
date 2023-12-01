@@ -11,6 +11,8 @@ Currently, two official plugins are available:
 
 - single page application using [react-router-dom](https://reactrouter.com/en/main)
 - make web and dashboard
+- web pages
+     - register
 
 # How to install
 - clone the repo in your desktop
@@ -18,3 +20,4 @@ Currently, two official plugins are available:
 - npm install
 - npm i react-router-dom
 - npm i bootstrap
+- npm i formik
