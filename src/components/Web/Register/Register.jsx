@@ -27,11 +27,14 @@ export default function Register() {
         return errors;
     }
 
+    const initialValues = {
+        userName: '', email: '', password: '', image: ""
+    }
+    const onSubmit = values => { console.log(values) },
+    
     const formik = useFormik({
-        initialValues: {
-            userName: '', email: '', password: '', image: ""
-        },
-        onSubmit: values => { console.log(values) },
+        initialValues,
+        onSubmit,
         validate,
     })
 
