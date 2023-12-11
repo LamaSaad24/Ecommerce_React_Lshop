@@ -1,8 +1,7 @@
 import React from 'react'
 
-export default function Input({ input, errors }) {
-    const { type = "text", id, name, placeholder, value, onChange, touched } = input
-
+export default function Input({ input, errors, onChange, touched ,onBlur }) {
+    const { type = "text", id, name, placeholder, value } = input
 
     return (
         <>
@@ -14,7 +13,8 @@ export default function Input({ input, errors }) {
                     placeholder={placeholder}
                     autoComplete="true"
                     value={value}
-                    onChange={onChange}/>
+                    onChange={onChange}
+                    onBlur={onBlur}/>
                 {touched[name] && <p className="rounded-1 bg-danger mt-2 text-white py-1 px-2 text-small">{errors[name]}</p>}
             </div>
         </>

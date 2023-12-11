@@ -1,7 +1,8 @@
 import React from 'react'
 import Input from '../pages/Input'
 import { useFormik } from 'formik'
-import { validate } from '../../Validation/validate'
+// import { validate } from '../../Validation/validate'
+import {userSchema}  from '../../Validation/validate'
 
 export default function Register() {
 
@@ -15,8 +16,10 @@ export default function Register() {
     const formik = useFormik({
         initialValues,
         onSubmit,
-        validate,
+        // validate,
+        validationSchema : userSchema
     })
+
 
     const Inputs = [
         {
@@ -53,6 +56,7 @@ export default function Register() {
             value={formik.values.password}
             onChange={formik.handleChange}
             touched={formik.touched}
+            onBlur = {formik.handleBlur}
         />
     )
 
@@ -63,7 +67,7 @@ export default function Register() {
                 <form onSubmit={formik.handleSubmit}>
                     {renderInputs}
                     <div className="card-footer border-secondary bg-transparent">
-                        <button type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Register</button>
+                        <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Register</button>
                     </div>
                 </form>
             </div>
