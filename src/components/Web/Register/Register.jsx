@@ -4,23 +4,53 @@ import { useFormik } from 'formik'
 // import { validate } from '../../Validation/validate'
 import { userSchema } from '../../Validation/validate'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 export default function Register() {
 
 
     const initialValues = {
-        userName: '', email: '', password: '', image: ""
+        userName: '', email: '', password: '', image: ''
+    }
+
+    const handleImage = (event) => {
+        formik.setFieldValue('image',event.target.files[0])
     }
 
     const onSubmit = async user => {
         
         const formData = new FormData()
-        formData.append("userName ",user.userName)
-        formData.append("email ",user.email)
-        formData.append("password ",user.password)
-        formData.append("image ",user.image)
+        formData.append("userName",user.userName)
+        formData.append("email",user.email)
+        formData.append("password",user.password)
+        formData.append("image",user.image)
+
+            const {data} = await axios.post("https://ecommerce-node4.vercel.app/auth/signup",formData)
+
+            if(data.message=="success"){
+                formik.resetForm()
+                toast.success('account created succefuly please confirm', {
+                    position: "top-left",
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            }else{
+                toast.error(data.message, {
+                    position: "top-left",
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            }
         
-        
+
     }
 
     const formik = useFormik({
@@ -37,23 +67,27 @@ export default function Register() {
             id: 'name',
             name: 'userName',
             placeholder: "Enter Your Name",
+            value: formik.values.userName
         },
         {
             type: 'email',
             id: 'email',
             name: 'email',
             placeholder: "Enter Your Email",
+            value: formik.values.email
         },
         {
             type: 'password',
             id: 'password',
             name: 'password',
             placeholder: "Enter Your Password",
+            value: formik.values.password
         },
         {
             type: 'file',
             id: 'image',
             name: 'image',
+            onChange:handleImage
         }
     ]
 
@@ -63,7 +97,7 @@ export default function Register() {
             input={input}
             errors={formik.errors}
             value={formik.values.password}
-            onChange={formik.handleChange}
+            onChange={input.onChange || formik.handleChange}
             touched={formik.touched}
             onBlur={formik.handleBlur}
         />

@@ -15,7 +15,7 @@ export default function Input({ input, errors, onChange, touched ,onBlur }) {
                     value={value}
                     onChange={onChange}
                     onBlur={onBlur}/>
-                {touched[name] && <p className="rounded-1 bg-danger mt-2 text-white py-1 px-2 text-small">{errors[name]}</p>}
+                {touched[name] && errors[name] && <p className="rounded-1 bg-danger mt-2 text-white py-1 px-2 text-small">{errors[name]}</p>}
             </div>
         </>
     )
