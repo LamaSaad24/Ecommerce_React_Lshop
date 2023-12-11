@@ -21,3 +21,6 @@ Currently, two official plugins are available:
 - npm i react-router-dom
 - npm i bootstrap
 - npm i formik
+- npm i yup
+- npm i axios
+- npm i react-toastify
