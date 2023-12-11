@@ -2,7 +2,8 @@ import React from 'react'
 import Input from '../pages/Input'
 import { useFormik } from 'formik'
 // import { validate } from '../../Validation/validate'
-import {userSchema}  from '../../Validation/validate'
+import { userSchema } from '../../Validation/validate'
+import axios from 'axios'
 
 export default function Register() {
 
@@ -11,13 +12,22 @@ export default function Register() {
         userName: '', email: '', password: '', image: ""
     }
 
-    const onSubmit = values => { console.log(values) }
+    const onSubmit = async user => {
+        
+        const formData = new FormData()
+        formData.append("userName ",user.userName)
+        formData.append("email ",user.email)
+        formData.append("password ",user.password)
+        formData.append("image ",user.image)
+        
+        
+    }
 
     const formik = useFormik({
         initialValues,
         onSubmit,
         // validate,
-        validationSchema : userSchema
+        validationSchema: userSchema
     })
 
 
@@ -44,7 +54,6 @@ export default function Register() {
             type: 'file',
             id: 'image',
             name: 'image',
-            placeholder: "Enter Your Image",
         }
     ]
 
@@ -56,7 +65,7 @@ export default function Register() {
             value={formik.values.password}
             onChange={formik.handleChange}
             touched={formik.touched}
-            onBlur = {formik.handleBlur}
+            onBlur={formik.handleBlur}
         />
     )
 
@@ -64,7 +73,7 @@ export default function Register() {
         <>
             <div className="container mt-4">
                 <h1 className='text-center'>Create An New Account</h1>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
                     {renderInputs}
                     <div className="card-footer border-secondary bg-transparent">
                         <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Register</button>
