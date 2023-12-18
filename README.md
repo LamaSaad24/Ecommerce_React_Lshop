@@ -12,15 +12,21 @@ Currently, two official plugins are available:
 - single page application using [react-router-dom](https://reactrouter.com/en/main)
 - make web and dashboard
 - web pages
-     - register
+     - register & validate use (jwt-decode & formik &yup)
+     - login
+        #libraries
+          -react-router-dom
+          -bootstrap
+          -formik
+          -yup
+          -axios
+          -react-toastify
+          - jwt-decode
+          - react-query
+     -get categories  and caching data using useQuery
 
 # How to install
 - clone the repo in your desktop
   run this command
 - npm install
-- npm i react-router-dom
-- npm i bootstrap
-- npm i formik
-- npm i yup
-- npm i axios
-- npm i react-toastify
+  
