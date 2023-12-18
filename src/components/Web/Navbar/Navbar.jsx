@@ -1,7 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link,  useNavigate } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar({ user,setUser }) {
+
+    const navigate = useNavigate()
+
+    const logout = ()=>{
+        localStorage.removeItem("token")
+        setUser(null)
+        navigate("/home")
+    }
     return (
         <>
             <div className="container-fluid">
@@ -68,16 +76,16 @@ export default function Navbar() {
                     <a href="#" className="text-decoration-none d-block d-lg-none">
                         <h1 className="m-0 display-5 font-weight-semi-bold"><span className="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                     </a>
-                    <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span className="navbar-toggler-icon" />
                     </button>
                     <div className="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div className="navbar-nav mr-auto py-0">
-                            <a href="index.html" className="nav-item nav-link active">Home</a>
+                            <Link to="/" className="nav-item nav-link active">Home</Link>
                             <a href="shop.html" className="nav-item nav-link">Shop</a>
                             <a href="detail.html" className="nav-item nav-link">Shop Detail</a>
                             <div className="nav-item dropdown">
-                                <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div className="dropdown-menu rounded-0 m-0">
                                     <a href="cart.html" className="dropdown-item">Shopping Cart</a>
                                     <a href="checkout.html" className="dropdown-item">Checkout</a>
@@ -86,8 +94,12 @@ export default function Navbar() {
                             <a href="contact.html" className="nav-item nav-link">Contact</a>
                         </div>
                         <div className="navbar-nav ml-auto py-0">
-                            <a href="#" className="nav-item nav-link">Login</a>
-                            <Link to="/register" className="nav-item nav-link">Register</Link>
+                            {!user ?
+                                <><Link to="/login" className="nav-item nav-link">Login</Link>
+                                    <Link to="/register" className="nav-item nav-link">Register</Link></> :
+                                <><Link to="/profile" className="nav-item nav-link">profile</Link>
+                                    <Link  className="nav-item nav-link" onClick={logout}>logout</Link></>
+                            }
                         </div>
                     </div>
                 </nav>

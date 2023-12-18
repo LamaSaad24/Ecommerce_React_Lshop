@@ -5,6 +5,7 @@ import Home from "../components/Web/Home/Home";
 import HomeDashboard from "../components/Dashboard/Home/Home";
 import NotFound from "../Shared/NotFound"
 import Register from "../components/Web/Register/Register";
+import Login from "../components/Web/Login/Login";
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
             {
                 path:'register',
                 element:<Register/>
+            },
+            {
+                path:'login',
+                element:<Login/>
             },
             {
                 path:'home',
