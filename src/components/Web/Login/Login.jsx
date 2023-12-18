@@ -1,37 +1,29 @@
 import React from 'react'
 import Input from '../pages/Input'
 import { useFormik } from 'formik'
-// import { validate } from '../../Validation/validate'
-import { userSchema } from '../../Validation/validate'
+import { loginSchema } from '../../Validation/validate'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
-export default function Register() {
+export default function Login({saveCurrentUser}) {
 
 
     const initialValues = {
-        userName: '', email: '', password: '', image: ''
+        email: '', password: ''
     }
 
-    const handleImage = (event) => {
-        formik.setFieldValue('image', event.target.files[0])
-    }
+    const navigate = useNavigate()
+
 
     const onSubmit = async user => {
-
-        const formData = new FormData()
-        formData.append("userName", user.userName)
-        formData.append("email", user.email)
-        formData.append("password", user.password)
-        formData.append("image", user.image)
-
-        // for(let data of formData.entries()) console.log(data)
-
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}auth/signup`, formData)
-
+        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}auth/signin`, user)
+        console.log(data)
         if (data.message == "success") {
-            formik.resetForm()
-            toast.success('account created succefuly please confirm', {
+            navigate('/')
+            localStorage.setItem("token",data.token)
+            saveCurrentUser()
+            toast.success('Login successful', {
                 position: "top-left",
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -59,18 +51,11 @@ export default function Register() {
         initialValues,
         onSubmit,
         // validate,
-        validationSchema: userSchema
+        validationSchema: loginSchema
     })
 
 
     const Inputs = [
-        {
-            type: 'text',
-            id: 'name',
-            name: 'userName',
-            placeholder: "Enter Your Name",
-            value: formik.values.userName
-        },
         {
             type: 'email',
             id: 'email',
@@ -84,12 +69,6 @@ export default function Register() {
             name: 'password',
             placeholder: "Enter Your Password",
             value: formik.values.password
-        },
-        {
-            type: 'file',
-            id: 'image',
-            name: 'image',
-            onChange: handleImage
         }
     ]
 
@@ -108,11 +87,11 @@ export default function Register() {
     return (
         <>
             <div className="container mt-4">
-                <h1 className='text-center'>Create An New Account</h1>
+                <h1 className='text-center'>Sign in</h1>
                 <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
                     {renderInputs}
                     <div className="card-footer border-secondary bg-transparent">
-                        <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Register</button>
+                        <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Login</button>
                     </div>
                 </form>
             </div>
