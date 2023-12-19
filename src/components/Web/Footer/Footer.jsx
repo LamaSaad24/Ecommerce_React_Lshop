@@ -65,7 +65,7 @@ export default function Footer() {
                         </p>
                     </div>
                     <div className="col-md-6 px-xl-0 text-center text-md-right">
-                        <img className="img-fluid" src="assets/img/payments.png"  />
+                        <img className="img-fluid" src="#"  />
                     </div>
                 </div>
             </div>
