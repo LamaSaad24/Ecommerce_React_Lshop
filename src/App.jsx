@@ -1,5 +1,10 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css'
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 import { router } from './Routes/Rout'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
@@ -14,6 +19,8 @@ import NotFound from "./Shared/NotFound"
 import Register from "./components/Web/Register/Register";
 import Login from "./components/Web/Login/Login";
 import Layouts from './Layouts/Layouts'
+import ProductsByCategories from './components/Web/Products/ProductsByCategories'
+import ProductDetails from './components/Web/Products/ProductDetails'
 
 function App() {
 
@@ -51,6 +58,14 @@ function App() {
         {
           path: 'login',
           element: <Login saveCurrentUser={saveCurrentUser} />
+        },
+        {
+          path:"/products/:name/:id",
+          element: <ProductsByCategories/>
+        },
+        {
+          path:"/product/:name/:id",
+          element:<ProductDetails/>
         }
       ]
     },
