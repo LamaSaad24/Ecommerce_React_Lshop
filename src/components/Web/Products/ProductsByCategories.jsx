@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
+import PageHeader from '../../../Shared/PageHeader'
 
 export default function ProductsByCategories() {
 
