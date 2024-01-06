@@ -7,23 +7,24 @@ import PageHeader from '../../../Shared/PageHeader'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import ReactImageMagnify from 'react-image-magnify'
 
 export default function ProductDetails() {
 
     const { id, name } = useParams()
-    
+
     const getProductDetails = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}products/${id}`)
         return data?.product;
     }
-    
+
     const { data, isLoading } = useQuery(`products.${name}`, getProductDetails)
 
     const getProductsByCategories = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}products/category/${data?.categoryId}`)
         return data.products;
     }
-    
+
     const products = []
     console.log(products)
 
@@ -42,7 +43,20 @@ export default function ProductDetails() {
                                         {data?.subImages.map((img, i) => {
                                             return (
                                                 <div className={`carousel-item ${i == 0 ? "active" : ''}`} key={img.public_id}>
-                                                    <img className="w-100 h-100" src={img.secure_url} alt="Image" />
+                                                    <ReactImageMagnify {...{
+                                                        smallImage: {
+                                                            alt: img.secure_url,
+                                                            isFluidWidth: true,
+                                                            src: img.secure_url
+                                                        },
+                                                        largeImage: {
+                                                            src: img.secure_url,
+                                                            width: "100%",
+                                                            height: "100%"
+                                                        },
+                                                        isHintEnabled:true,
+                                                        hintTextMouse:"over mouse",
+                                                    }} />
                                                 </div>
                                             )
                                         })}
@@ -103,7 +117,7 @@ export default function ProductDetails() {
                                                 <i className="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" className="form-control bg-secondary text-center"  />
+                                        <input type="text" className="form-control bg-secondary text-center" />
                                         <div className="input-group-btn">
                                             <button className="btn btn-primary btn-plus">
                                                 <i className="fa fa-plus"></i>
@@ -267,7 +281,7 @@ export default function ProductDetails() {
                                             <SwiperSlide>
                                                 <div className="card product-item border-0">
                                                     <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                                        <img className="img-fluid w-100" src={product.mainImage.secure_url} alt={product.mainImage.secure_url}  />
+                                                        <img className="img-fluid w-100" src={product.mainImage.secure_url} alt={product.mainImage.secure_url} />
                                                     </div>
                                                     <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                                         <h6 className="text-truncate mb-3">{product.name}</h6>
