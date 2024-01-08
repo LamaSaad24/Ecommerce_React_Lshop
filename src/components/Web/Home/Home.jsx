@@ -32,16 +32,16 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                            <a className="carousel-control-prev" data-bs-target="#header-carousel" data-bs-slide="prev">
+                            <div className="carousel-control-prev" data-bs-target="#header-carousel" data-bs-slide="prev">
                                 <div className="btn btn-dark" style={{ width: "45px", height: "45px" }}>
                                     <span className="carousel-control-prev-icon mb-n2"></span>
                                 </div>
-                            </a>
-                            <a className="carousel-control-next" data-bs-target="#header-carousel" data-bs-slide="next">
+                            </div>
+                            <div className="carousel-control-next" data-bs-target="#header-carousel" data-bs-slide="next">
                                 <div className="btn btn-dark" style={{ width: "45px", height: "45px" }}>
                                     <span className="carousel-control-next-icon mb-n2"></span>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
