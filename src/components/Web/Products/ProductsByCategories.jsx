@@ -1,12 +1,15 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useContext } from 'react'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import PageHeader from '../../../Shared/PageHeader'
+import { CartContext } from '../Context/Cart'
+import { toast } from 'react-toastify'
 
 export default function ProductsByCategories() {
 
     const { id, name } = useParams()
+    const { addToCartContext } = useContext(CartContext)
 
     const getProductsByCategories = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}products/category/${id}`)
@@ -15,10 +18,35 @@ export default function ProductsByCategories() {
 
     const { data, isLoading } = useQuery(`products.${name}`, getProductsByCategories)
 
+    const addToCart = async (productID) => {
+        const res = await addToCartContext(productID)
+        if (res.message == "success") {
+            toast.success(res.message, {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            toast.error(res.response.data.message, {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
 
     return (
         <>
-            <PageHeader name={name} title={"Shop"}/>
+            <PageHeader name={name} title={"Shop"} />
             <div className="container-fluid pt-5">
                 <div className="row px-xl-5">
                     <div className="col-lg-3 col-md-12">
@@ -170,7 +198,7 @@ export default function ProductsByCategories() {
                                             </div>
                                             <div className="card-footer d-flex justify-content-between bg-light border">
                                                 <Link to={`/product/${product.slug}/${product._id}`} className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</Link>
-                                                <a href="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                                <a className="btn btn-sm text-dark p-0" onClick={() => addToCart(product._id)}><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                                             </div>
                                         </div>
                                     </div>)

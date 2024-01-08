@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import PageHeader from '../../../Shared/PageHeader'
@@ -8,6 +8,8 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ReactImageMagnify from 'react-image-magnify'
+import { CartContext } from '../Context/Cart'
+import { toast } from 'react-toastify'
 
 export default function ProductDetails() {
 
@@ -20,13 +22,40 @@ export default function ProductDetails() {
 
     const { data, isLoading } = useQuery(`products.${name}`, getProductDetails)
 
+    const {addToCartContext} = useContext(CartContext)
+
     const getProductsByCategories = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}products/category/${data?.categoryId}`)
         return data.products;
     }
 
+    const addToCart = async (productID)=>{
+        const res = await addToCartContext(productID)
+        if(res.message=="success"){
+            toast.success(res.message, {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }else{
+            toast.error(res.response.data.message, {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
     const products = []
-    console.log(products)
+    // console.log(products)
 
 
 
@@ -124,7 +153,7 @@ export default function ProductDetails() {
                                             </button>
                                         </div>
                                     </div>
-                                    <button className="btn btn-primary px-3"><i className="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                                    <button className="btn btn-primary px-3"  onClick={()=>addToCart(data?._id)}><i className="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                                 </div>
                                 <div className="d-flex pt-2">
                                     <p className="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
