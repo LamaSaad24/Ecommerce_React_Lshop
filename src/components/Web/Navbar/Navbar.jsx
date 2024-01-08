@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link,  useNavigate } from 'react-router-dom'
+import { CartContext } from '../Context/Cart'
 
 export default function Navbar({ user,setUser }) {
 
     const navigate = useNavigate()
+    const {count} = useContext(CartContext)
 
     const logout = ()=>{
         localStorage.removeItem("token")
@@ -66,10 +68,10 @@ export default function Navbar({ user,setUser }) {
                             <i className="fas fa-heart text-primary" />
                             <span className="badge">0</span>
                         </a>
-                        <a href="#" className="btn border">
+                        <Link to="cart" className="btn border">
                             <i className="fas fa-shopping-cart text-primary" />
-                            <span className="badge">0</span>
-                        </a>
+                            <span className="badge">{count}</span>
+                        </Link>
                     </div>
                 </div>
                 <nav className="navbar container navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
