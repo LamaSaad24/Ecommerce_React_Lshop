@@ -17,23 +17,34 @@ export default function Login({saveCurrentUser}) {
 
 
     const onSubmit = async user => {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}auth/signin`, user)
-        console.log(data)
-        if (data.message == "success") {
-            navigate('/')
-            localStorage.setItem("token",data.token)
-            saveCurrentUser()
-            toast.success('Login successful', {
-                position: "top-left",
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        } else {
-            toast.error(data.message, {
+        try{
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}auth/signin`, user)
+            if (data.message == "success") {
+                navigate('/')
+                localStorage.setItem("token",data.token)
+                saveCurrentUser()
+                toast.success('Login successful', {
+                    position: "top-left",
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            } else {
+                toast.error(data.message, {
+                    position: "top-left",
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+        }catch(e){
+            toast.error(e.response.data.message, {
                 position: "top-left",
                 hideProgressBar: false,
                 closeOnClick: true,
