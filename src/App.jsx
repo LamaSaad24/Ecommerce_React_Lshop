@@ -21,6 +21,8 @@ import Login from "./components/Web/Login/Login";
 import Layouts from './Layouts/Layouts'
 import ProductsByCategories from './components/Web/Products/ProductsByCategories'
 import ProductDetails from './components/Web/Products/ProductDetails'
+import {CartContextProvider} from './components/Web/Context/Cart'
+import Cart from './components/Web/Cart/Cart';
 
 function App() {
 
@@ -60,13 +62,17 @@ function App() {
           element: <Login saveCurrentUser={saveCurrentUser} />
         },
         {
-          path:"/products/:name/:id",
-          element: <ProductsByCategories/>
+          path: "/products/:name/:id",
+          element: <ProductsByCategories />
         },
         {
-          path:"/product/:name/:id",
-          element:<ProductDetails/>
-        }
+          path: "/product/:name/:id",
+          element: <ProductDetails />
+        },
+        {
+          path: '/cart',
+          element: <Cart />
+        },
       ]
     },
     {
@@ -86,8 +92,10 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
-      <ToastContainer />
+      <CartContextProvider>
+        <RouterProvider router={router} />
+        <ToastContainer />
+      </CartContextProvider>
     </>
   )
 }
