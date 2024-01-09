@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CartContext } from '../Context/Cart'
 import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
@@ -6,10 +6,16 @@ import { ConfirmToast } from 'react-confirm-toast'
 
 export default function Cart() {
 
-    const { total, getCartContext, removeFromCartContext, clearCartContext } = useContext(CartContext)
+    const { total, getCartContext, removeFromCartContext, clearCartContext, changeQuantityContext } = useContext(CartContext)
+
+    const [data ,setData] = useState([])
+    const [isLoading , setisLoading] = useState(true)
+
 
     const getCart = async () => {
         const res = await getCartContext()
+        setData(res)
+        setisLoading(false)
         return res
     }
 
@@ -65,7 +71,16 @@ export default function Cart() {
         }
     }
 
-    const { isLoading, data } = useQuery("cart", getCart)
+    const changeQuantity = async (id,key) => {
+        // console.log(event.target.closest('td').find("input[name='qty']").val())
+        const res = await changeQuantityContext(id,key)
+    }
+
+    useEffect(()=>{
+        getCart()
+    },[])
+
+    // const { isLoading, data } = useQuery("cart", getCart)
 
 
 
@@ -73,7 +88,7 @@ export default function Cart() {
         <div className="container-fluid pt-5">
             <div className="row px-xl-5">
                 <div className="col-lg-8 table-responsive mb-5">
-                    {isLoading ? <p>Cart is empty</p> :
+                    {isLoading ? "isLoading..." :
                         (<table className="table table-bordered text-center mb-0">
                             <thead className="bg-secondary text-dark">
                                 <tr>
@@ -85,6 +100,7 @@ export default function Cart() {
                                 </tr>
                             </thead>
                             <tbody className="align-middle" id="items">
+                                {data?.count==0&&<tr><td colSpan={5}>cart is empty</td></tr>}
                                 {data?.products?.map(product =>
                                     <tr key={product._id}>
                                         <td className="align-middle"><img src={product.details.mainImage.secure_url} alt="" style={{ "width": "100px", "height": "100px" }} /> {product.details.name}</td>
@@ -92,13 +108,18 @@ export default function Cart() {
                                         <td className="align-middle">
                                             <div className="input-group quantity mx-auto" style={{ "width": "100px" }}>
                                                 <div className="input-group-btn">
-                                                    <button className="btn btn-sm btn-primary btn-minus" >
+                                                    <button onClick={() => { changeQuantity(product.details._id,"decrease") }} className="btn btn-sm btn-primary btn-minus" >
                                                         <i className="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" className="form-control form-control-sm bg-secondary text-center" value={product.quantity} />
+                                                <input
+                                                    type="text"
+                                                    className="form-control form-control-sm bg-secondary text-center"
+                                                    value={product.quantity}
+                                                    name="qty"
+                                                />
                                                 <div className="input-group-btn">
-                                                    <button className="btn btn-sm btn-primary btn-plus">
+                                                    <button onClick={() => { changeQuantity(product.details._id,"increase") }} className="btn btn-sm btn-primary btn-plus">
                                                         <i className="fa fa-plus"></i>
                                                     </button>
                                                 </div>

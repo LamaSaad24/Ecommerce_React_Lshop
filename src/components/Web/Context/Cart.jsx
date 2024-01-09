@@ -52,11 +52,31 @@ export const CartContextProvider = ({ children }) => {
 
     const clearCartContext = async () => {
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/clear`,
+                const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/clear`,{},
                 { headers: { Authorization: `Tariq__${token}` } })
             return data;
         } catch (e) {
             return e
+        }
+    }
+
+    const changeQuantityContext = async(productId,key)=>{
+        if(key=="increase"){
+            try {
+                const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/incraseQuantity`,{productId},
+                    { headers: { Authorization: `Tariq__${token}` } })
+                return data;
+            } catch (e) {
+                return e
+            }
+        }else{
+            try {
+                const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/decraseQuantity`,{productId},
+                    { headers: { Authorization: `Tariq__${token}` } })
+                return data;
+            } catch (e) {
+                return e
+            }
         }
     }
 
@@ -66,6 +86,7 @@ export const CartContextProvider = ({ children }) => {
         addToCartContext,
         getCartContext,
         removeFromCartContext,
-        clearCartContext
+        clearCartContext,
+        changeQuantityContext
     }}>{children}</CartContext.Provider>
 }
