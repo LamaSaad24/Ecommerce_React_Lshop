@@ -9,15 +9,17 @@ export const CartContextProvider = ({ children }) => {
     const [count, setCount] = useState(0)
     const [total, setTotal] = useState(0)
 
-    const getTotal = ({products})=>{
-        let t=0
-        products.map(e=>t +=e.quantity*e.details.finalPrice)
+    const token = localStorage.getItem("token")
+
+
+    const getTotal = ({ products }) => {
+        let t = 0
+        products.map(e => t += e.quantity * e.details.finalPrice)
         setTotal(t)
     }
 
     const addToCartContext = async (productId) => {
         try {
-            const token = localStorage.getItem("token")
             const { data } = await axios.post(`${import.meta.env.VITE_API_URL}cart`, { productId },
                 { headers: { Authorization: `Tariq__${token}` } })
             return data;
@@ -28,11 +30,10 @@ export const CartContextProvider = ({ children }) => {
 
     const getCartContext = async () => {
         try {
-            const token = localStorage.getItem("token")
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}cart`,
                 { headers: { Authorization: `Tariq__${token}` } })
-                setCount(data.count)
-                getTotal(data)
+            setCount(data.count)
+            getTotal(data)
             return data;
         } catch (e) {
             return e
@@ -41,9 +42,18 @@ export const CartContextProvider = ({ children }) => {
 
     const removeFromCartContext = async (productId) => {
         try {
-            const token = localStorage.getItem("token")
             const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/removeItem`, { productId },
-            { headers: { Authorization: `Tariq__${token}` } })
+                { headers: { Authorization: `Tariq__${token}` } })
+            return data;
+        } catch (e) {
+            return e
+        }
+    }
+
+    const clearCartContext = async () => {
+        try {
+            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/clear`,
+                { headers: { Authorization: `Tariq__${token}` } })
             return data;
         } catch (e) {
             return e
@@ -51,5 +61,11 @@ export const CartContextProvider = ({ children }) => {
     }
 
 
-    return <CartContext.Provider value={{ total,count, addToCartContext, getCartContext, removeFromCartContext }}>{children}</CartContext.Provider>
+    return <CartContext.Provider value={{
+        total, count,
+        addToCartContext,
+        getCartContext,
+        removeFromCartContext,
+        clearCartContext
+    }}>{children}</CartContext.Provider>
 }
