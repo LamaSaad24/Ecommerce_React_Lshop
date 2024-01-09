@@ -111,7 +111,7 @@ export default function ProductDetails() {
                                     </div>
                                     <small className="pt-1">({data?.reviews.length} Reviews)</small>
                                 </div>
-                                <h3 className="font-weight-semi-bold mb-4">${data?.price}</h3>
+                                <h3 className="font-weight-semi-bold mb-4">${data?.finalPrice}</h3>
                                 <p className="mb-4">{data?.description}</p>
                                 <div className="d-flex mb-3">
                                     <p className="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>

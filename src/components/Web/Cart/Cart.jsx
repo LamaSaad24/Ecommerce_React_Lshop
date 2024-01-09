@@ -7,16 +7,13 @@ import { ConfirmToast } from 'react-confirm-toast'
 export default function Cart() {
 
     const { total, getCartContext, removeFromCartContext, clearCartContext, changeQuantityContext } = useContext(CartContext)
-
-    const [data ,setData] = useState([])
-    const [isLoading , setisLoading] = useState(true)
-
+    const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const getCart = async () => {
         const res = await getCartContext()
+        setIsLoading(false)
         setData(res)
-        setisLoading(false)
-        return res
     }
 
     const removeFromCart = async (productId) => {
@@ -71,16 +68,36 @@ export default function Cart() {
         }
     }
 
-    const changeQuantity = async (id,key) => {
-        // console.log(event.target.closest('td').find("input[name='qty']").val())
-        const res = await changeQuantityContext(id,key)
+    const changeQuantity = async (id,price,key) => {
+        const res = await changeQuantityContext(id,price, key)
+        if (res.message == "success") {
+            toast.success("Updated quantity successfuly", {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            toast.error(res.response.data.message, {
+                position: "top-left",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        getCart()
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getCart()
-    },[])
+    }, [])
 
-    // const { isLoading, data } = useQuery("cart", getCart)
 
 
 
@@ -100,15 +117,19 @@ export default function Cart() {
                                 </tr>
                             </thead>
                             <tbody className="align-middle" id="items">
-                                {data?.count==0&&<tr><td colSpan={5}>cart is empty</td></tr>}
+                                {data?.count == 0 && <tr><td colSpan={5}>cart is empty</td></tr>}
                                 {data?.products?.map(product =>
                                     <tr key={product._id}>
                                         <td className="align-middle"><img src={product.details.mainImage.secure_url} alt="" style={{ "width": "100px", "height": "100px" }} /> {product.details.name}</td>
-                                        <td className="align-middle">${product.details.price}</td>
+                                        <td className="align-middle">${product.details.finalPrice}</td>
                                         <td className="align-middle">
                                             <div className="input-group quantity mx-auto" style={{ "width": "100px" }}>
                                                 <div className="input-group-btn">
-                                                    <button onClick={() => { changeQuantity(product.details._id,"decrease") }} className="btn btn-sm btn-primary btn-minus" >
+                                                    <button
+                                                        onClick={() => { changeQuantity(product.details._id,product.details.finalPrice, "decrease") }}
+                                                        className="btn btn-sm btn-primary btn-minus"
+                                                        disabled={product.quantity==1?"disabled":""}
+                                                        >
                                                         <i className="fa fa-minus"></i>
                                                     </button>
                                                 </div>
@@ -117,15 +138,20 @@ export default function Cart() {
                                                     className="form-control form-control-sm bg-secondary text-center"
                                                     value={product.quantity}
                                                     name="qty"
+                                                    min={0}
                                                 />
                                                 <div className="input-group-btn">
-                                                    <button onClick={() => { changeQuantity(product.details._id,"increase") }} className="btn btn-sm btn-primary btn-plus">
+                                                    <button 
+                                                    onClick={() => { changeQuantity(product.details._id,product.details.finalPrice, "increase") }} 
+                                                    className="btn btn-sm btn-primary btn-plus"
+                                                    disabled={product.quantity==product.details.stock?"disabled":""}
+                                                    >
                                                         <i className="fa fa-plus"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="align-middle">${product.quantity * product.details.price}</td>
+                                        <td className="align-middle">${product.quantity * product.details.finalPrice}</td>
                                         <td className="align-middle">
                                             <ConfirmToast
                                                 asModal={true}

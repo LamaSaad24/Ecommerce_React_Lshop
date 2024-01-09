@@ -22,6 +22,7 @@ export const CartContextProvider = ({ children }) => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_API_URL}cart`, { productId },
                 { headers: { Authorization: `Tariq__${token}` } })
+                setCount(count+1)
             return data;
         } catch (e) {
             return e
@@ -54,17 +55,19 @@ export const CartContextProvider = ({ children }) => {
         try {
                 const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/clear`,{},
                 { headers: { Authorization: `Tariq__${token}` } })
+                setCount(0)
             return data;
         } catch (e) {
             return e
         }
     }
 
-    const changeQuantityContext = async(productId,key)=>{
+    const changeQuantityContext = async(productId,price,key)=>{
         if(key=="increase"){
             try {
                 const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/incraseQuantity`,{productId},
                     { headers: { Authorization: `Tariq__${token}` } })
+                    setTotal(total+price)
                 return data;
             } catch (e) {
                 return e
@@ -73,6 +76,7 @@ export const CartContextProvider = ({ children }) => {
             try {
                 const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/decraseQuantity`,{productId},
                     { headers: { Authorization: `Tariq__${token}` } })
+                    setTotal(total-price)
                 return data;
             } catch (e) {
                 return e
