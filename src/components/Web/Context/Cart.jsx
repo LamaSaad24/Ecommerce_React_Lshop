@@ -7,7 +7,13 @@ export const CartContext = createContext(null)
 export const CartContextProvider = ({ children }) => {
 
     const [count, setCount] = useState(0)
-    const [cart, setCart] = useState([])
+    const [total, setTotal] = useState(0)
+
+    const getTotal = ({products})=>{
+        let t=0
+        products.map(e=>t +=e.quantity*e.details.finalPrice)
+        setTotal(t)
+    }
 
     const addToCartContext = async (productId) => {
         try {
@@ -25,6 +31,8 @@ export const CartContextProvider = ({ children }) => {
             const token = localStorage.getItem("token")
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}cart`,
                 { headers: { Authorization: `Tariq__${token}` } })
+                setCount(data.count)
+                getTotal(data)
             return data;
         } catch (e) {
             return e
@@ -35,7 +43,7 @@ export const CartContextProvider = ({ children }) => {
         try {
             const token = localStorage.getItem("token")
             const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}cart/removeItem`, { productId },
-                { headers: { Authorization: `Tariq__${token}` } })
+            { headers: { Authorization: `Tariq__${token}` } })
             return data;
         } catch (e) {
             return e
@@ -43,5 +51,5 @@ export const CartContextProvider = ({ children }) => {
     }
 
 
-    return <CartContext.Provider value={{ count, addToCartContext, getCartContext, removeFromCartContext }}>{children}</CartContext.Provider>
+    return <CartContext.Provider value={{ total,count, addToCartContext, getCartContext, removeFromCartContext }}>{children}</CartContext.Provider>
 }
