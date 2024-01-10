@@ -23,6 +23,11 @@ import ProductsByCategories from './components/Web/Products/ProductsByCategories
 import ProductDetails from './components/Web/Products/ProductDetails'
 import {CartContextProvider} from './components/Web/Context/Cart'
 import Cart from './components/Web/Cart/Cart';
+import ForgetPassowrd from './components/Web/ForgetPassowrd/ForgetPassowrd';
+import RestPassword from './components/Web/ForgetPassowrd/RestPassword';
+import { Profiler } from 'react';
+import Profile from './components/Web/Profile/Profile';
+import { ProfileContextProvider } from './components/Web/Context/Profile';
 
 function App() {
 
@@ -62,12 +67,24 @@ function App() {
           element: <Login saveCurrentUser={saveCurrentUser} />
         },
         {
+          path: 'profile',
+          element: <ProfileContextProvider><Profile/></ProfileContextProvider>
+        },
+        {
+          path: 'forgetPassword',
+          element: <ForgetPassowrd/>
+        },
+        {
+          path: 'restPassword',
+          element: <RestPassword/>
+        },
+        {
           path: "/products/:name/:id",
           element: <ProductsByCategories />
         },
         {
           path: "/product/:name/:id",
-          element: <ProductDetails />
+          element:  <ProductDetails />
         },
         {
           path: '/cart',

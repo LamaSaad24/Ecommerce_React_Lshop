@@ -13,6 +13,16 @@ export const loginSchema = yup.object({
     password : yup.string().required('field is required'),  
 })
 
+export const forgetPasswordSchema = yup.object({
+    email : yup.string().required('field is required').email("email not valid"),
+})
+
+export const resetPasswordSchema = yup.object({
+    email : yup.string().required('field is required').email("email not valid"),
+    password : yup.string().required('field is required'),  
+    code: yup.string().length(4,"must exactly 4").required("field is required")
+})
+
 
 // const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
 // const passwordPattern = /^[A-Za-z0-9]{8,30}$/i

@@ -1,29 +1,27 @@
 import React from 'react'
 import Input from '../pages/Input'
 import { useFormik } from 'formik'
-import { loginSchema } from '../../Validation/validate'
+import { forgetPasswordSchema } from '../../Validation/validate'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-export default function Login({saveCurrentUser}) {
+export default function ForgetPassowrd({ saveCurrentUser }) {
 
 
     const initialValues = {
-        email: '', password: ''
+        email: ''
     }
 
     const navigate = useNavigate()
 
 
     const onSubmit = async user => {
-        try{
-            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}auth/signin`, user)
+        try {
+            const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}auth/sendcode`, user)
             if (data.message == "success") {
-                navigate('/')
-                localStorage.setItem("token",data.token)
-                saveCurrentUser()
-                toast.success('Login successful', {
+                navigate('/restPassword')
+                toast.success('send code successful', {
                     position: "top-left",
                     hideProgressBar: false,
                     closeOnClick: true,
@@ -43,7 +41,7 @@ export default function Login({saveCurrentUser}) {
                     theme: "light",
                 });
             }
-        }catch(e){
+        } catch (e) {
             toast.error(e.response.data.message, {
                 position: "top-left",
                 hideProgressBar: false,
@@ -62,7 +60,7 @@ export default function Login({saveCurrentUser}) {
         initialValues,
         onSubmit,
         // validate,
-        validationSchema: loginSchema
+        validationSchema: forgetPasswordSchema
     })
 
 
@@ -73,13 +71,6 @@ export default function Login({saveCurrentUser}) {
             name: 'email',
             placeholder: "Enter Your Email",
             value: formik.values.email
-        },
-        {
-            type: 'password',
-            id: 'password',
-            name: 'password',
-            placeholder: "Enter Your Password",
-            value: formik.values.password
         }
     ]
 
@@ -98,14 +89,13 @@ export default function Login({saveCurrentUser}) {
     return (
         <>
             <div className="container mt-4">
-                <h1 className='text-center'>Sign in</h1>
-                <form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
+                <h1 className='text-center'>forget password</h1>
+                <form onSubmit={formik.handleSubmit}>
                     {renderInputs}
-                    <div className="card-footer px-0  bg-transparent">
-                        <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Login</button>
+                    <div className="card-footer px-0 border-secondary bg-transparent">
+                        <button disabled={!formik.isValid} type='submit' className="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">SendCode</button>
                     </div>
                 </form>
-                <Link to="/forgetPassword" className='text-primary text-decoration-underline d-block text-center'>forget password</Link>
             </div>
         </>
     )
