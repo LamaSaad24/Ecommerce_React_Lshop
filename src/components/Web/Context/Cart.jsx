@@ -12,6 +12,7 @@ export const CartContextProvider = ({ children }) => {
     const token = localStorage.getItem("token")
 
 
+
     const getTotal = ({ products }) => {
         let t = 0
         products.map(e => t += e.quantity * e.details.finalPrice)

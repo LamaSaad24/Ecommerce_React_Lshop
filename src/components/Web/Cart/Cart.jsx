@@ -3,8 +3,9 @@ import { CartContext } from '../Context/Cart'
 import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
 import { ConfirmToast } from 'react-confirm-toast'
+import { Link } from 'react-router-dom'
 
-export default function Cart() {
+export default function Cart({ user }) {
 
     const { total, getCartContext, removeFromCartContext, clearCartContext, changeQuantityContext } = useContext(CartContext)
     const [data, setData] = useState([])
@@ -44,7 +45,7 @@ export default function Cart() {
 
     const clearCart = async () => {
         const res = await clearCartContext()
-        document.getElementById("items").style.display = "none"
+        // document.getElementById("items").style.display = "none"
         if (res.message == "success") {
             toast.success("Deleted successfuly", {
                 position: "top-left",
@@ -68,8 +69,8 @@ export default function Cart() {
         }
     }
 
-    const changeQuantity = async (id,price,key) => {
-        const res = await changeQuantityContext(id,price, key)
+    const changeQuantity = async (id, price, key) => {
+        const res = await changeQuantityContext(id, price, key)
         if (res.message == "success") {
             toast.success("Updated quantity successfuly", {
                 position: "top-left",
@@ -116,7 +117,12 @@ export default function Cart() {
                                     <th>Remove</th>
                                 </tr>
                             </thead>
-                            <tbody className="align-middle" id="items">
+                            <tbody className="align-middle" >
+                                {!user && (
+                                    <tr><td colSpan={5}>click here to
+                                        <Link to='/login'> login</Link >
+                                    </td></tr>)}
+
                                 {data?.count == 0 && <tr><td colSpan={5}>cart is empty</td></tr>}
                                 {data?.products?.map(product =>
                                     <tr key={product._id}>
@@ -126,10 +132,10 @@ export default function Cart() {
                                             <div className="input-group quantity mx-auto" style={{ "width": "100px" }}>
                                                 <div className="input-group-btn">
                                                     <button
-                                                        onClick={() => { changeQuantity(product.details._id,product.details.finalPrice, "decrease") }}
+                                                        onClick={() => { changeQuantity(product.details._id, product.details.finalPrice, "decrease") }}
                                                         className="btn btn-sm btn-primary btn-minus"
-                                                        disabled={product.quantity==1?"disabled":""}
-                                                        >
+                                                        disabled={product.quantity == 1 ? "disabled" : ""}
+                                                    >
                                                         <i className="fa fa-minus"></i>
                                                     </button>
                                                 </div>
@@ -141,10 +147,10 @@ export default function Cart() {
                                                     min={0}
                                                 />
                                                 <div className="input-group-btn">
-                                                    <button 
-                                                    onClick={() => { changeQuantity(product.details._id,product.details.finalPrice, "increase") }} 
-                                                    className="btn btn-sm btn-primary btn-plus"
-                                                    disabled={product.quantity==product.details.stock?"disabled":""}
+                                                    <button
+                                                        onClick={() => { changeQuantity(product.details._id, product.details.finalPrice, "increase") }}
+                                                        className="btn btn-sm btn-primary btn-plus"
+                                                        disabled={product.quantity == product.details.stock ? "disabled" : ""}
                                                     >
                                                         <i className="fa fa-plus"></i>
                                                     </button>
