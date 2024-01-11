@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ProfileContext } from '../Context/Profile'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../Context/User'
 
 export default function Profile() {
-    const { getUserContext, getOrderContext } = useContext(ProfileContext)
+    const { getUserContext, getOrderContext } = useContext(UserContext)
     const [user, setUser] = useState(null)
     const [orders, setOrder] = useState(null)
 
