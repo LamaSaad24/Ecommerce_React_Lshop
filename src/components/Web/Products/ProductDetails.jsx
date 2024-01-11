@@ -13,6 +13,8 @@ import { toast } from 'react-toastify'
 
 export default function ProductDetails() {
 
+    const [qty, setQty] = useState(1)
+
     const { id, name } = useParams()
 
     const getProductDetails = async () => {
@@ -22,16 +24,16 @@ export default function ProductDetails() {
 
     const { data, isLoading } = useQuery(`products.${name}`, getProductDetails)
 
-    const {addToCartContext} = useContext(CartContext)
+    const { addToCartContext } = useContext(CartContext)
 
     const getProductsByCategories = async () => {
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}products/category/${data?.categoryId}`)
         return data.products;
     }
 
-    const addToCart = async (productID)=>{
+    const addToCart = async (productID) => {
         const res = await addToCartContext(productID)
-        if(res.message=="success"){
+        if (res.message == "success") {
             toast.success(res.message, {
                 position: "top-left",
                 hideProgressBar: false,
@@ -41,7 +43,7 @@ export default function ProductDetails() {
                 progress: undefined,
                 theme: "light",
             });
-        }else{
+        } else {
             toast.error(res.response.data.message, {
                 position: "top-left",
                 hideProgressBar: false,
@@ -55,9 +57,6 @@ export default function ProductDetails() {
     }
 
     const products = []
-    // console.log(products)
-
-
 
     return (
         <>
@@ -75,16 +74,18 @@ export default function ProductDetails() {
                                                     <ReactImageMagnify {...{
                                                         smallImage: {
                                                             alt: img.secure_url,
-                                                            isFluidWidth: true,
-                                                            src: img.secure_url
+                                                            src: img.secure_url,
+                                                            width: 600,
+                                                            height: 600,
                                                         },
                                                         largeImage: {
                                                             src: img.secure_url,
-                                                            width: "100%",
-                                                            height: "100%"
+                                                            width: 1200,
+                                                            height: 1200,
                                                         },
-                                                        isHintEnabled:true,
-                                                        hintTextMouse:"over mouse",
+                                                        isHintEnabled: true,
+                                                        hintTextMouse: "over mouse",
+                                                        enlargedImagePosition:'over'
                                                     }} />
                                                 </div>
                                             )
@@ -142,18 +143,20 @@ export default function ProductDetails() {
                                 <div className="d-flex align-items-center mb-4 pt-2">
                                     <div className="input-group quantity mr-3" style={{ width: "130px" }}>
                                         <div className="input-group-btn">
-                                            <button className="btn btn-primary btn-minus" >
+                                            <button className="btn btn-primary btn-minus" onClick={()=>setQty(qty-1)} 
+                                            disabled={qty==0?true:false}>
                                                 <i className="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" className="form-control bg-secondary text-center" />
+                                        <input type="text" className="form-control bg-secondary text-center" disabled  value={qty} />
                                         <div className="input-group-btn">
-                                            <button className="btn btn-primary btn-plus">
+                                            <button className="btn btn-primary btn-plus"
+                                            onClick={()=>setQty(qty+1)}>
                                                 <i className="fa fa-plus"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <button className="btn btn-primary px-3"  onClick={()=>addToCart(data?._id)}><i className="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                                    <button className="btn btn-primary px-3" onClick={() => addToCart(data?._id)}><i className="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                                 </div>
                                 <div className="d-flex pt-2">
                                     <p className="text-dark font-weight-medium mb-0 mr-2">Share on:</p>

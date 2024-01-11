@@ -1,16 +1,19 @@
 import React, { useContext } from 'react'
-import { Link,  useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CartContext } from '../Context/Cart'
+import { UserContext } from '../Context/User'
 
-export default function Navbar({ user,setUser }) {
+export default function Navbar() {
+
+    const { userToken, setUserToken } = useContext(UserContext)
 
     const navigate = useNavigate()
-    const {count} = useContext(CartContext)
+    const { count } = useContext(CartContext)
 
-    const logout = ()=>{
+    const logout = () => {
         localStorage.removeItem("token")
-        setUser(null)
-        navigate("/home")
+        setUserToken(null)
+        navigate("/")
     }
     return (
         <>
@@ -68,10 +71,12 @@ export default function Navbar({ user,setUser }) {
                             <i className="fas fa-heart text-primary" />
                             <span className="badge">0</span>
                         </a>
-                        <Link to="cart" className="btn border">
-                            <i className="fas fa-shopping-cart text-primary" />
-                            <span className="badge">{count}</span>
-                        </Link>
+                        {userToken &&
+                            <Link to="cart" className="btn border">
+                                <i className="fas fa-shopping-cart text-primary" />
+                                <span className="badge">{count}</span>
+                            </Link>
+                        }
                     </div>
                 </div>
                 <nav className="navbar container navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
@@ -96,11 +101,11 @@ export default function Navbar({ user,setUser }) {
                             <a href="contact.html" className="nav-item nav-link">Contact</a>
                         </div>
                         <div className="navbar-nav ml-auto py-0">
-                            {!user ?
+                            {!userToken ?
                                 <><Link to="/login" className="nav-item nav-link">Login</Link>
                                     <Link to="/register" className="nav-item nav-link">Register</Link></> :
                                 <><Link to="/profile" className="nav-item nav-link">profile</Link>
-                                    <Link  className="nav-item nav-link" onClick={logout}>logout</Link></>
+                                    <Link className="nav-item nav-link" onClick={logout}>logout</Link></>
                             }
                         </div>
                     </div>

@@ -4,8 +4,11 @@ import { useQuery } from 'react-query'
 import { toast } from 'react-toastify'
 import { ConfirmToast } from 'react-confirm-toast'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../Context/User'
 
-export default function Cart({ user }) {
+export default function Cart() {
+
+    const { userToken } = useContext(UserContext)
 
     const { total, getCartContext, removeFromCartContext, clearCartContext, changeQuantityContext } = useContext(CartContext)
     const [data, setData] = useState([])
@@ -72,15 +75,15 @@ export default function Cart({ user }) {
     const changeQuantity = async (id, price, key) => {
         const res = await changeQuantityContext(id, price, key)
         if (res.message == "success") {
-            toast.success("Updated quantity successfuly", {
-                position: "top-left",
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            // toast.success("Updated quantity successfuly", {
+            //     position: "top-left",
+            //     hideProgressBar: false,
+            //     closeOnClick: true,
+            //     pauseOnHover: true,
+            //     draggable: true,
+            //     progress: undefined,
+            //     theme: "light",
+            // });
         } else {
             toast.error(res.response.data.message, {
                 position: "top-left",
@@ -118,7 +121,7 @@ export default function Cart({ user }) {
                                 </tr>
                             </thead>
                             <tbody className="align-middle" >
-                                {!user && (
+                                {!userToken && (
                                     <tr><td colSpan={5}>click here to
                                         <Link to='/login'> login</Link >
                                     </td></tr>)}
@@ -145,6 +148,7 @@ export default function Cart({ user }) {
                                                     value={product.quantity}
                                                     name="qty"
                                                     min={0}
+                                                    disabled
                                                 />
                                                 <div className="input-group-btn">
                                                     <button

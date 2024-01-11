@@ -6,7 +6,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function ResetPassword({saveCurrentUser}) {
+export default function ResetPassword() {
 
 
     const initialValues = {

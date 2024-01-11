@@ -6,37 +6,67 @@ import HomeDashboard from "../components/Dashboard/Home/Home";
 import NotFound from "../Shared/NotFound"
 import Register from "../components/Web/Register/Register";
 import Login from "../components/Web/Login/Login";
+import Profile from "../components/Web/Profile/Profile";
+import ForgetPassowrd from "../components/Web/ForgetPassowrd/ForgetPassowrd";
+import ResetPassword from "../components/Web/ForgetPassowrd/RestPassword";
+import ProductsByCategories from "../components/Web/Products/ProductsByCategories";
+import ProductDetails from "../components/Web/Products/ProductDetails";
+import Cart from "../components/Web/Cart/Cart";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layouts/>,
-        children:[
+        element: <Layouts />,
+        children: [
             {
-                path:'register',
-                element:<Register/>
+                path: '',
+                element: <Home />
             },
             {
-                path:'login',
-                element:<Login/>
+                path: 'register',
+                element: <Register />
             },
             {
-                path:'home',
-                element:<Home/>
-            }
+                path: 'login',
+                element: <Login />
+            },
+            {
+                path: 'profile',
+                element: <Profile/>
+            },
+            {
+                path: 'forgetPassword',
+                element: <ForgetPassowrd/>
+            },
+            {
+                path: 'restPassword',
+                element: <ResetPassword/>
+            },
+            {
+                path: "/products/:name/:id",
+                element: <ProductsByCategories/>
+            },
+            {
+                path: "/product/:name/:id",
+                element: <ProductDetails/>
+            },
+            {
+                path: '/cart',
+                element: <Cart/>
+            },
         ]
     },
     {
         path: "/dashboard",
-        element: <LayoutsDashboard/>,
-        children:[
+        element: <LayoutsDashboard />,
+        children: [
             {
-                path:'home',
-                element:<HomeDashboard/>
+                path: 'home',
+                element: <HomeDashboard />
             }
         ]
-    },{
+    }, {
         path: "*",
-        element: <NotFound/>
+        element: <NotFound />
     }
 ]);

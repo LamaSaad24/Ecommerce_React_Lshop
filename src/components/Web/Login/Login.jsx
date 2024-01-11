@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Input from '../pages/Input'
 import { useFormik } from 'formik'
 import { loginSchema } from '../../Validation/validate'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../Context/User'
 
-export default function Login({saveCurrentUser}) {
+export default function Login() {
 
-
+    const {setUserToken} = useContext(UserContext)
+    
     const initialValues = {
         email: '', password: ''
     }
@@ -22,7 +24,7 @@ export default function Login({saveCurrentUser}) {
             if (data.message == "success") {
                 navigate('/')
                 localStorage.setItem("token",data.token)
-                saveCurrentUser()
+                setUserToken(data.token)
                 toast.success('Login successful', {
                     position: "top-left",
                     hideProgressBar: false,

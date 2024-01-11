@@ -38,7 +38,7 @@ export default function Categories() {
                                         </div>
                                         <div className="dropdown-menu hide position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
                                             {category.subcategory?.map((subcategory) => {
-                                                return <a key={subcategory._id} href="#" className="dropdown-item">{subcategory.name}</a>
+                                                return <p key={subcategory._id} href="#" className="dropdown-item">{subcategory.name}</p>
                                             })}
                                         </div>
                                     </Link>
