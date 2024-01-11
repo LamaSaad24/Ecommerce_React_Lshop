@@ -4,12 +4,12 @@ import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext(null)
 
 export const UserContextProvider = ({ children }) => {
-    useEffect(
-        () => {
-            if (localStorage.getItem("token"))
-                saveCurrentUser()
-        }
-        , []);
+    // useEffect(
+    //     () => {
+    //         if (localStorage.getItem("token"))
+    //             saveCurrentUser()
+    //     }
+    //     , []);
 
     const [userToken, setUserToken] = useState(null)
 

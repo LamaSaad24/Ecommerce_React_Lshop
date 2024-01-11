@@ -12,6 +12,7 @@ import ResetPassword from "../components/Web/ForgetPassowrd/RestPassword";
 import ProductsByCategories from "../components/Web/Products/ProductsByCategories";
 import ProductDetails from "../components/Web/Products/ProductDetails";
 import Cart from "../components/Web/Cart/Cart";
+import ProtectedRoute from "../components/Web/ProtectedRoute/ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
@@ -52,7 +53,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/cart',
-                element: <Cart/>
+                element: <ProtectedRoute><Cart/></ProtectedRoute>
             },
         ]
     },
