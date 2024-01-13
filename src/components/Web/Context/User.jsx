@@ -4,15 +4,9 @@ import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext(null)
 
 export const UserContextProvider = ({ children }) => {
-    // useEffect(
-    //     () => {
-    //         if (localStorage.getItem("token"))
-    //             saveCurrentUser()
-    //     }
-    //     , []);
-
+    
     const [userToken, setUserToken] = useState(null)
-
+    
 
     const saveCurrentUser = () => {
         const token = localStorage.getItem("token")
@@ -40,7 +34,13 @@ export const UserContextProvider = ({ children }) => {
             return error
         }
     }
-
+    
+    useEffect(
+        () => {
+            if (localStorage.getItem("token"))
+                saveCurrentUser()
+        }
+        , []);
     return <UserContext.Provider
         value={{ userToken, setUserToken, getUserContext, getOrderContext }}>
         {children}

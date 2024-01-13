@@ -13,6 +13,7 @@ import ProductsByCategories from "../components/Web/Products/ProductsByCategorie
 import ProductDetails from "../components/Web/Products/ProductDetails";
 import Cart from "../components/Web/Cart/Cart";
 import ProtectedRoute from "../components/Web/ProtectedRoute/ProtectedRoute";
+import Auth from "../components/Web/ProtectedRoute/Auth";
 
 export const router = createBrowserRouter([
     {
@@ -25,15 +26,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'register',
-                element: <Register />
+                element: <Auth><Register /></Auth>
             },
             {
                 path: 'login',
-                element: <Login />
+                element: <Auth><Login /></Auth>
             },
             {
                 path: 'profile',
-                element: <Profile/>
+                element: <ProtectedRoute><Profile/></ProtectedRoute>
             },
             {
                 path: 'forgetPassword',
