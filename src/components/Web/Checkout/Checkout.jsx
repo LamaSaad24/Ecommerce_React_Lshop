@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CartContext } from '../Context/Cart'
 import { useFormik } from 'formik'
 import Input from '../pages/Input'
+import { orderSchema } from '../../Validation/validate'
 
 export default function Checkout() {
 
@@ -23,7 +24,7 @@ export default function Checkout() {
         console.log(order)
     }
 
-    const formik = useFormik({ initialValues,onSubmit, validationSchema: })
+    const formik = useFormik({ initialValues,onSubmit, validationSchema: orderSchema })
     const inputs = [
         {
             id: "address",
