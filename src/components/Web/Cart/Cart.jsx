@@ -212,7 +212,7 @@ export default function Cart() {
                                 <h5 className="font-weight-bold">Total</h5>
                                 <h5 className="font-weight-bold">${total}</h5>
                             </div>
-                            <button className="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                            <Link to="/checkout"><button className="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button></Link>
                         </div>
                     </div>
                     <ConfirmToast
