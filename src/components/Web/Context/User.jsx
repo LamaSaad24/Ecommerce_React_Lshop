@@ -6,10 +6,12 @@ export const UserContext = createContext(null)
 export const UserContextProvider = ({ children }) => {
     
     const [userToken, setUserToken] = useState(null)
+    const [token, setToken] = useState(null)
     
 
     const saveCurrentUser = () => {
         const token = localStorage.getItem("token")
+        setToken(token)
         const userToken = jwtDecode(token)
         setUserToken(userToken)
     }
@@ -42,7 +44,7 @@ export const UserContextProvider = ({ children }) => {
         }
         , []);
     return <UserContext.Provider
-        value={{ userToken, setUserToken, getUserContext, getOrderContext }}>
+        value={{ userToken,token, setUserToken, getUserContext, getOrderContext }}>
         {children}
     </UserContext.Provider>
 }

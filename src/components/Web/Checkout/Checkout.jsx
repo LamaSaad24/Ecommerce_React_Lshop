@@ -3,10 +3,14 @@ import { CartContext } from '../Context/Cart'
 import { useFormik } from 'formik'
 import Input from '../pages/Input'
 import { orderSchema } from '../../Validation/validate'
+import axios from 'axios'
+import { UserContext } from '../Context/User'
+import { toast } from 'react-toastify'
 
 export default function Checkout() {
 
     const { getCartContext, total } = useContext(CartContext)
+    const { token } = useContext(UserContext)
     const [products, setProducts] = useState([])
 
     const getCart = async () => {
@@ -20,8 +24,15 @@ export default function Checkout() {
 
     const initialValues = { couponName: "", address: "", phone: "" }
 
-    const onSubmit = (order)=>{
-        console.log(order)
+    const onSubmit = async (order)=>{
+        try {
+            const {data} = await axios.post(`${import.meta.env.VITE_API_URL}order`, order,
+            { headers: { Authorization: `Tariq__${token}` } })
+            toast.success(data.message)
+            
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
     }
 
     const formik = useFormik({ initialValues,onSubmit, validationSchema: orderSchema })
@@ -52,6 +63,7 @@ export default function Checkout() {
     const renderInputs = inputs.map((input, index) =>
         <Input
             key={index}
+            index={index}
             input={input}
             errors={formik.errors}
             onChange={input.onChange || formik.handleChange}
