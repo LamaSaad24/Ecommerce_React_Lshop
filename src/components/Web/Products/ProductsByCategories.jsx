@@ -31,7 +31,7 @@ export default function ProductsByCategories() {
                 theme: "light",
             });
         } else {
-            toast.error(res.response.data.message, {
+            toast.error(res?.type?"you must login":res.response.data.message, {
                 position: "top-left",
                 hideProgressBar: false,
                 closeOnClick: true,

@@ -44,7 +44,7 @@ export default function ProductDetails() {
                 theme: "light",
             });
         } else {
-            toast.error(res.response.data.message, {
+            toast.error(res?.type=="login"?"you must login":res.response.data.message, {
                 position: "top-left",
                 hideProgressBar: false,
                 closeOnClick: true,

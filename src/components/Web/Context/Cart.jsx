@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./User";
 
 
 export const CartContext = createContext(null)
@@ -9,7 +10,7 @@ export const CartContextProvider = ({ children }) => {
     const [count, setCount] = useState(0)
     const [total, setTotal] = useState(0)
 
-    const token = localStorage.getItem("token")
+    const {token} = useContext(UserContext)
 
 
 
@@ -26,7 +27,10 @@ export const CartContextProvider = ({ children }) => {
             setCount(count + 1)
             return data;
         } catch (e) {
-            return e
+            let msg ;
+            if(!token) msg = {type:"login"}
+            else msg = e
+            return msg
         }
     }
 
