@@ -1,3 +1,4 @@
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 
@@ -19,7 +20,7 @@ export const UserContextProvider = ({ children }) => {
     const getUserContext = async () => {
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}user/profile`,
-                { headers: { Authorization: `Tariq__${userToken}` } })
+                { headers: { Authorization: `Tariq__${token}` } })
             return data
         } catch (error) {
             return error
@@ -29,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
     const getOrderContext = async () => {
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}order`, {
-                headers: { Authorization: `Tariq__${userToken}` }
+                headers: { Authorization: `Tariq__${token}` }
             })
             return data
         } catch (error) {
@@ -43,6 +44,7 @@ export const UserContextProvider = ({ children }) => {
                 saveCurrentUser()
         }
         , []);
+
     return <UserContext.Provider
         value={{ userToken,token, setUserToken, getUserContext, getOrderContext }}>
         {children}

@@ -15,6 +15,8 @@ import Cart from "../components/Web/Cart/Cart";
 import ProtectedRoute from "../components/Web/ProtectedRoute/ProtectedRoute";
 import Auth from "../components/Web/ProtectedRoute/Auth";
 import Checkout from "../components/Web/Checkout/Checkout";
+import Order from "../components/Web/Profile/Order";
+import Contact from "../components/Web/Profile/Contact";
 
 export const router = createBrowserRouter([
     {
@@ -31,11 +33,21 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'login',
-                element: <Auth><Login /></Auth>
+                element: <Auth><Login/></Auth>
             },
             {
-                path: 'profile',
-                element: <ProtectedRoute><Profile/></ProtectedRoute>
+                path: 'profile/',
+                element: <ProtectedRoute><Profile/></ProtectedRoute>,
+                children:[
+                    {
+                        path:'orders',
+                        element: <Order/>
+                    },
+                    {
+                        path:'contact',
+                        element:<Contact/>
+                    },
+                ]
             },
             {
                 path: 'forgetPassword',
