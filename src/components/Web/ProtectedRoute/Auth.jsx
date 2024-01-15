@@ -1,15 +1,12 @@
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
-export default function Auth() {
-
-    const navigate = useNavigate();
+export default function Auth({children}) {
 
     if(localStorage.getItem("token")){
-        // return <Navigate to='/'/>
-        return navigate(-1)
+        return <Navigate to="/"/>
     }else{
-        return <Navigate to='/login'/>
+        return children
     }
     
 }

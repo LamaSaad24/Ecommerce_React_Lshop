@@ -8,11 +8,12 @@ export default function Navbar() {
     const { userToken, setUserToken } = useContext(UserContext)
 
     const navigate = useNavigate()
-    const { count } = useContext(CartContext)
+    const { count,setCount } = useContext(CartContext)
 
     const logout = () => {
         localStorage.removeItem("token")
         setUserToken(null)
+        setCount(0)
         navigate("/")
     }
     return (
